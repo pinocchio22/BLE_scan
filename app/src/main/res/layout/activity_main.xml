@@ -8,20 +8,31 @@
     android:background="@color/grey">
 
     <Button
-        android:id="@+id/search"
+        android:id="@+id/start_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="기기 검색"
         android:background="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/stop_search"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/stop_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색 중지"
+        android:background="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@id/start_search"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recyclerview"
-        app:layout_constraintTop_toBottomOf="@id/search"/>
+        app:layout_constraintTop_toBottomOf="@id/start_search"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

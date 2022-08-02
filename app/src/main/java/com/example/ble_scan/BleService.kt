@@ -82,7 +82,7 @@ class BleService : Service() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun scanDevice(state:Boolean) = if(state){
+    fun scanDevice(state:Boolean) = if(state){
         handler.postDelayed({
             scanning = false
             bluetoothAdapter?.bluetoothLeScanner?.stopScan(mLeScanCallback)

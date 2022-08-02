@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = recyclerViewAdapter
         }
-        binding.search.setOnClickListener { v: View? ->
+        binding.startSearch.setOnClickListener {
             if(bluetoothAdapter?.isEnabled==false){
                 Toast.makeText(this, "블루투스를 확인하세요!", Toast.LENGTH_SHORT).show()
             } else{
@@ -187,6 +187,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 scanDevice(true)
             }
+        }
+        binding.stopSearch.setOnClickListener {
+            mBleService?.scanDevice(false)
         }
     }
 
@@ -210,6 +213,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         // 액티비티를 떠나면
+        println(mBleService!!.isScanning())
         if (mBleService != null) {
             // 스캔중이지 않으면 서비스 중단
             if (!mBleService!!.isScanning()) {
