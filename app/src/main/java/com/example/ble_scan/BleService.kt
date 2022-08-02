@@ -14,6 +14,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.postDelayed
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.pow
 
 /**
@@ -34,6 +36,9 @@ class BleService : Service() {
     private val handler = Handler()
     private var scanning : Boolean = false
 
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var recyclerViewAdapter : MainActivity.RecyclerViewAdapter
+
     private var bluetoothAdapter: BluetoothAdapter? = null
 
     var mBinder : BLEBinder = BLEBinder()
@@ -47,6 +52,10 @@ class BleService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+
+        viewManager = LinearLayoutManager(this)
+        recyclerViewAdapter = MainActivity.RecyclerViewAdapter(BleData)
+
         startForegroundService()
     }
 
@@ -60,7 +69,7 @@ class BleService : Service() {
             notificationManager.createNotificationChannel(mChannel)
             // 알림 생성
             val notification : Notification = Notification.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.bluetooth)
                 .setContentTitle("블루투스 스캔")
                 .setContentText("스캔중입니다.")
                 .build()
@@ -98,7 +107,6 @@ class BleService : Service() {
             super.onScanFailed(errorCode)
             Log.d("scanCallback", "BLE Scan Failed : $errorCode")
         }
-
         @SuppressLint("MissingPermission")
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
             super.onBatchScanResults(results)
@@ -113,6 +121,23 @@ class BleService : Service() {
                             BleData.add(BleData(result.device, result.rssi))
                         }
                     }
+                }
+            }
+        }
+
+        @SuppressLint("MissingPermission", "NotifyDataSetChanged")
+        override fun onScanResult(callbackType: Int, result: ScanResult?) {
+            super.onScanResult(callbackType, result)
+            result?.let {
+                // 거리를 계산하는 올바른 알고리즘 필요
+                distance = 10.0.pow((result.rssi - result.txPower)/20.0)
+                // distance < 1km
+                if (distance > 0) {
+                    if (!devicesArr.contains(it.device) && it.device.name!=null) {
+                        devicesArr.add(it.device)
+                        BleData.add(BleData(result.device, result.rssi))
+                    }
+                    recyclerViewAdapter.notifyDataSetChanged()
                 }
             }
         }

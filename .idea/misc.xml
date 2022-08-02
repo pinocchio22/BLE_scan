@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/CHOI/Desktop/ANDproject/BLE_scan/app/src/main/res/drawable/ic_launcher_background.xml" value="0.243" />
         <entry key="..\:/Users/CHOI/Desktop/ANDproject/BLE_scan/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CHOI/Desktop/ANDproject/BLE_scan/app/src/main/res/layout/recycler_item.xml" value="0.3515625" />
       </map>

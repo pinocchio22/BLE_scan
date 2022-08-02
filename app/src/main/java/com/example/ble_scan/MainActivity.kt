@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                             devicesArr.add(result.device)
                             BleData.add(BleData(result.device, result.rssi))
                         }
+                        recyclerViewAdapter.notifyDataSetChanged()
                     }
                 }
             }
