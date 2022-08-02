@@ -34,10 +34,10 @@ import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding : ActivityMainBinding
+
     private val REQUEST_ALL_PERMISSION = 1
-    private val PERMISSIONS = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
+    private val PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADMIN)
+
     private var bluetoothAdapter: BluetoothAdapter? = null
     private var scanning : Boolean = false
     private var devicesArr = ArrayList<BluetoothDevice>()
@@ -133,19 +133,15 @@ class MainActivity : AppCompatActivity() {
     }
     // 퍼미션 체크
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_ALL_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permissions granted!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "권한 승인!", Toast.LENGTH_SHORT).show()
                 } else {
                     requestPermissions(permissions, REQUEST_ALL_PERMISSION)
-                    Toast.makeText(this, "Permissions must be granted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "권한이 필요합니다!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -203,7 +199,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 startService(Intent(applicationContext, BleService::class.java))
             }
-
             // 액티비티와 서비스 바인드
             val intent = Intent(this, BleService::class.java)
             bindService(intent, mBleServiceConnection, Context.BIND_AUTO_CREATE)

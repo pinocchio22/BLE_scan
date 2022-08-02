@@ -26,9 +26,6 @@ import kotlin.math.pow
 private val TAG = "gattClienCallback"
 
 class BleService : Service() {
-    var bleGatt : BluetoothGatt ?= null
-    var mBinder : BLEBinder = BLEBinder()
-
     private var devicesArr = ArrayList<BluetoothDevice>()
     var distance = 0.0
     var BleData = ArrayList<BleData>()
@@ -38,6 +35,8 @@ class BleService : Service() {
     private var scanning : Boolean = false
 
     private var bluetoothAdapter: BluetoothAdapter? = null
+
+    var mBinder : BLEBinder = BLEBinder()
 
     inner class BLEBinder : Binder() {
         fun getService() : BleService {
@@ -49,16 +48,6 @@ class BleService : Service() {
     override fun onCreate() {
         super.onCreate()
         startForegroundService()
-    }
-
-    @SuppressLint("MissingPermission")
-    fun disconnectGattServer(msg: String) {
-        Log.d("hereigo", "Closing Gatt connection")
-        // disconnect and close the gatt
-        if (bleGatt != null) {
-            bleGatt!!.disconnect()
-            bleGatt!!.close()
-        }
     }
 
     @SuppressLint("MissingPermission")

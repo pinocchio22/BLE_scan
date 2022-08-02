@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothProfile
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -74,10 +75,14 @@ class ConnectActivity(private val context: Context?, private var bluetoothGatt: 
     }
 
     @SuppressLint("MissingPermission")
-    fun connectGatt(device:BluetoothDevice) : BluetoothGatt? {
+    fun connectGatt(device:BluetoothDevice):BluetoothGatt?{
         this.device = device
-        bluetoothGatt = device.connectGatt(context, false, gattCallback,
-            BluetoothDevice.TRANSPORT_LE)
+        bluetoothGatt = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            device.connectGatt(context, false, gattCallback,
+                BluetoothDevice.TRANSPORT_LE)
+        } else {
+            device.connectGatt(context, false, gattCallback)
+        }
         return bluetoothGatt
     }
 
